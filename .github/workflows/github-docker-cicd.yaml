@@ -92,7 +92,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
 
       - name: Build the Docker image # push The image to the docker hub
-        run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
+        run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }} --build-arg ARG_OPEN_AI_API_KEY=${{ secrets.OPEN_AI_API_KEY }}
 
       - name: Docker Push
         run: docker push $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
