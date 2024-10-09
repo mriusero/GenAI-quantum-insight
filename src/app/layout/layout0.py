@@ -8,7 +8,7 @@ def page_0():
     st.markdown("---")
 
     # Récupérer la clé API depuis la variable d'environnement
-    openai_api_key = os.getenv("API_KEY")
+    openai_api_key = os.getenv("OPEN_AI_API_KEY")
 
     if openai_api_key:
         st.success(f"Utilisation de la clé API: 'openai_api_key'")
