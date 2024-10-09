@@ -1,0 +1,10 @@
+# Mac OS
+.DS_Store/
+
+# WORKSPACE
+README.md
+LICENSE
+
+## --> directories
+.git*
+tests/

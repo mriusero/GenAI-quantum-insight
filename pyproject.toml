@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "genai-quantum-insight"
+version = "0.1.0"
+description = ""
+authors = ["mriusero <marius.ayrault@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.3"
+streamlit = "^1.39.0"
+watchdog = "^5.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
