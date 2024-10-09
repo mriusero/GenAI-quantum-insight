@@ -94,5 +94,11 @@ jobs:
       - name: Build the Docker image # push The image to the docker hub
         run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
 
+      # API Key
+      - name: Run Docker container with API Key
+        env:
+          API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
+        run: docker run -e API_KEY=${{ secrets.OPEN_AI_API_KEY }} my-app-image
+
       - name: Docker Push
         run: docker push $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
