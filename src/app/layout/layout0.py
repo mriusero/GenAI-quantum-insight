@@ -1,12 +1,11 @@
 import streamlit as st
-import os
 
 def page_0():
     st.markdown('<div class="header">#0 Project Overview_</div>', unsafe_allow_html=True)
     st.text("")
     st.text("Here is an overview of the project")
-    st.markdown("---")
 
+    st.markdown("---")
 
     #Test V3
 
@@ -16,3 +15,4 @@ def page_0():
         st.success(f"Utilisation de la clé API: 'openai_api_key'")
     else:
         st.error("Pas de clé API fournie.")
+
