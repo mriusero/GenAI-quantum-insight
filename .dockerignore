@@ -8,3 +8,4 @@ LICENSE
 ## --> directories
 .git*
 tests/
+notebook/
