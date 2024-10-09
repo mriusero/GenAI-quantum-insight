@@ -10,9 +10,6 @@ RUN apt-get update && apt-get install -y curl build-essential libssl-dev libffi-
 # Copy necessary files into the container
 COPY pyproject.toml poetry.lock* /app/
 
-# Define environment variables
-ENV OPEN_AI_API_KEY=""
-
 # Install Poetry
 RUN curl -sSL https://install.python-poetry.org | python3 - && \
     export PATH="$HOME/.local/bin:$PATH" && \
