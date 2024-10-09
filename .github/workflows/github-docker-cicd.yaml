@@ -5,6 +5,7 @@ env:
   DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
   REPO_NAME: ${{secrets.REPO_NAME}}
   OPEN_AI_API_KEY: ${{secrets.OPEN_AI_API_KEY}}
+
 # Event Triggers:
 # The pipeline is triggered whenever there is a push to the main branch.
 # It is also triggered whenever there is a pull request to the main branch.
