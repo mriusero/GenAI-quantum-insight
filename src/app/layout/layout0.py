@@ -7,7 +7,9 @@ def page_0():
     st.text("Here is an overview of the project")
     st.markdown("---")
 
-    # Récupérer la clé API depuis la variable d'environnement
+
+    #Test V2
+
     openai_api_key = os.getenv("OPEN_AI_API_KEY")
 
     if openai_api_key:
