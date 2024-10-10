@@ -5,6 +5,8 @@ from ..components.utils import initialize_hg_api_key
 from ..features import research_assistant
 
 
+from huggingface_hub import HfApi
+
 def page_1():
     st.markdown('<div class="header">#1 Something_</div>', unsafe_allow_html=True)
     st.text("")
@@ -21,3 +23,4 @@ def page_1():
     st.sidebar.write(api.whoami(hg_api_key))
 
     research_assistant.run_assistance(hg_api_key, debug=debug)
+
