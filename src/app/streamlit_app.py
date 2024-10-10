@@ -1,39 +1,42 @@
 import gc
 import os
 
+#import src.app.features.arxiv_data_manager as arxiv        # Maintenance mode
 import streamlit as st
 
-#from ..visualization import DataVisualizer
-
-update_message = 'Data loaded'
-display = ""
 
 def load_css():
+    """Load custom CSS styles for the Streamlit app."""
     css_path = os.path.join(os.path.dirname(__file__), 'styles.css')
     with open(css_path) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
+
 def main_layout():
+    """Set up the main layout of the Streamlit application."""
     from .components import github_button
     from .layout import page_0, page_1, page_2, page_3, page_4, page_5, page_6
 
     st.set_page_config(
         page_title="Quantum Insights Agent",
-        page_icon="/components/page_icon.png",
         layout='wide',
         initial_sidebar_state="auto",
     )
+
     load_css()
+
     st.sidebar.markdown("# GenerativeAI \n"
                         " ## *Quantum Insights Agent*\n")
+
     page = st.sidebar.radio("Table of contents_", ["#0 Introduction_",
-                                         "#1 Something_",
-                                         "#2 Something_",
-                                         "#3 Something_",
-                                         "#4 Something_",
-                                         "#5 Something_",
-                                         "#6 Something_"
-                                         ])
+                                                   "#1 Something_",
+                                                   "#2 Something_",
+                                                   "#3 Something_",
+                                                   "#4 Something_",
+                                                   "#5 Something_",
+                                                   "#6 Something_"
+                                                   ])
+
     # -- LAYOUT --
     col1, col2 = st.columns([8, 4])
     with col1:
@@ -41,39 +44,27 @@ def main_layout():
         st.markdown('<div class="title"> Quantum Insights</div>', unsafe_allow_html=True)
 
         colA, colB, colC = st.columns([2, 11, 1])
+
         with colA:
-            # st.text("")
-            github_button('https://github.com/mriusero/GenAI-quantum-insight')
+            github_button('https://github.com/mriusero/GenAI-quantum-insight')  # GitHub button
+
         with colB:
             st.text("")
             st.markdown("#### *Quantum Computing Vulgarisation Agent* ")
 
-
-
-        #with colC:
-        #    # st.text("")
-        #    st.text("")
-        #    st.link_button('Link 2',
-        #                   'https://www.something.com')
-
-
     with col2:
         st.text("")
         st.text("")
-        st.text("")
-        st.text("")
-        #st.markdown("##### Data Loading")
-        #data = DataVisualizer()
-        #st.session_state.data = data
-
-        #st.markdown("##### Preprocessing")
-        #preprocessor = Preprocessor()
-        #st.session_state.processed_data = preprocessor.preprocess_data()
-
-
+        #arxiv.search_and_update(                       # Maintenance mode
+        #    db_name="./database/arxiv_data.db",
+        #    query="all:quantum",
+        #    max_results=10000,
+        #    total_results_limit=10000
+        #)
 
     st.markdown('---')
 
+    # -- PAGE RENDERING --
     if page == "#0 Introduction_":
         page_0()
     elif page == "#1 Something_":

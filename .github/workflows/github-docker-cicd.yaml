@@ -4,7 +4,6 @@ env:
   DOCKER_USER: ${{secrets.DOCKER_USER}}
   DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
   REPO_NAME: ${{secrets.REPO_NAME}}
-  OPEN_AI_API_KEY: ${{secrets.OPEN_AI_API_KEY}}
 
 # Event Triggers:
 # The pipeline is triggered whenever there is a push to the main branch.
@@ -29,10 +28,10 @@ jobs:
       # The first step uses the actions/checkout@v1 action to clone the repository.
       # The fetch-depth: 0 parameter ensures that the complete commit history is fetched.
 
-      - name: Set up Python 3.12  # Sets up Python 3.12 using the setup-python action.
+      - name: Set up Python 3.9.13  # Sets up Python 3.9 using the setup-python action.
         uses: actions/setup-python@v3
         with:
-          python-version: '3.12'
+          python-version: '3.9.13'
 
       - name: Install system dependencies # Installs the same system dependencies as in the Dockerfile.
         run: |
@@ -93,7 +92,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
 
       - name: Build the Docker image # push The image to the docker hub
-        run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }} --build-arg ARG_OPEN_AI_API_KEY=${{ secrets.OPEN_AI_API_KEY }}
+        run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
 
       - name: Docker Push
         run: docker push $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }}
