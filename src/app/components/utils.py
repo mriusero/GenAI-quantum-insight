@@ -20,7 +20,7 @@ def load_data(db_path="./database/arxiv_data.db"):
 def get_secret():
     """Retrieve the secret API key from AWS Secrets Manager."""
     secret_name = "HG_API_KEY"
-    region_name = "eu-north-1"
+    region_name = "eu-west-3"
     session = boto3.session.Session() # Create a Secrets Manager client
     client = session.client(
         service_name='secretsmanager',
