@@ -1,4 +1,5 @@
 import sqlite3
+import json
 import os
 from environs import Env, ErrorMapping
 import boto3
@@ -32,7 +33,8 @@ def get_secret():
         )
     except ClientError as e: # For a list of exceptions thrown, see https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
         raise e
-    return get_secret_value_response['SecretString']
+    secret_dict = json.loads(get_secret_value_response['SecretString'])
+    return secret_dict['HG_API_KEY']
 
 def initialize_hg_api_key():
     """Initialize and return the Hugging Face API key."""
