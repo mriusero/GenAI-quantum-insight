@@ -5,6 +5,8 @@
 .idea/
 __pycache__/
 
+src/.env
+
 # Jupyter Notebook
 notebook/
 .ipynb_checkpoints

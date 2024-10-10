@@ -28,10 +28,10 @@ jobs:
       # The first step uses the actions/checkout@v1 action to clone the repository.
       # The fetch-depth: 0 parameter ensures that the complete commit history is fetched.
 
-      - name: Set up Python 3.12  # Sets up Python 3.12 using the setup-python action.
+      - name: Set up Python 3.9.13  # Sets up Python 3.9 using the setup-python action.
         uses: actions/setup-python@v3
         with:
-          python-version: '3.12'
+          python-version: '3.9.13'
 
       - name: Install system dependencies # Installs the same system dependencies as in the Dockerfile.
         run: |

@@ -5,6 +5,8 @@
 README.md
 LICENSE
 
+src/.env
+
 ## --> directories
 .git*
 tests/

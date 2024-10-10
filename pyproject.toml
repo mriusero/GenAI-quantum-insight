@@ -1,17 +1,23 @@
 [tool.poetry]
-name = "genai-quantum-insight"
+name = "gen-ai-quantum-insight"
 version = "0.1.0"
 description = ""
-authors = ["mriusero <marius.ayrault@outlook.com>"]
+authors = ["mriusero"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-pandas = "^2.2.3"
+python = "3.9.13"
 streamlit = "^1.39.0"
 watchdog = "^5.0.3"
+pandas = "^2.2.3"
 black = "^24.10.0"
 pylint = "^3.3.1"
+environs = "^11.0.0"
+langchain-community = "^0.3.2"
+huggingface-hub = "^0.25.2"
+torch = "2.0.0"
+sentence-transformers = "^3.1.1"
+langchain-huggingface = "^0.1.0"
 
 
 [build-system]
