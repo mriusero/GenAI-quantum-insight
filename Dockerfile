@@ -24,10 +24,6 @@ RUN poetry install --no-dev  # Optional: install only production dependencies
 # Copy the rest of the source code into the container
 COPY . /app/
 
-# Set the OpenAI API key as an environment variable
-ARG ARG_OPEN_AI_API_KEY
-ENV OPEN_AI_API_KEY=${ARG_OPEN_AI_API_KEY}
-
 # Expose the port used by Streamlit
 EXPOSE 8501
 
