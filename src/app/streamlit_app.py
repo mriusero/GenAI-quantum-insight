@@ -56,12 +56,12 @@ def main_layout():
     with col2:
         st.text("")
         st.text("")
-        arxiv.search_and_update(
-            db_name="./database/arxiv_data.db",
-            query="all:quantum",
-            max_results=10000,
-            total_results_limit=10000
-        )
+        #arxiv.search_and_update(                       # Maintenance mode
+        #    db_name="./database/arxiv_data.db",
+        #    query="all:quantum",
+        #    max_results=10000,
+        #    total_results_limit=10000
+        #)
 
     st.markdown('---')
 
