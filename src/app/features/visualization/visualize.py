@@ -4,9 +4,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import seaborn as sns
 import streamlit as st
+from src.data import load_csv_files
 from statsmodels.tsa.seasonal import STL
-
-from ..data import load_csv_files
 
 
 class DataVisualizer:

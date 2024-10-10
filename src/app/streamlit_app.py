@@ -1,8 +1,8 @@
 import gc
 import os
-import streamlit as st
 
-import src.features.arxiv_data_manager as arxiv
+#import src.app.features.arxiv_data_manager as arxiv        # Maintenance mode
+import streamlit as st
 
 
 def load_css():
@@ -19,7 +19,6 @@ def main_layout():
 
     st.set_page_config(
         page_title="Quantum Insights Agent",
-        page_icon="/components/page_icon.png",
         layout='wide',
         initial_sidebar_state="auto",
     )

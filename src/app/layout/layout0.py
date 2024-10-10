@@ -1,5 +1,7 @@
 import streamlit as st
+
 from ..components.utils import load_data
+
 
 def page_0():
     st.markdown('<div class="header">#0 Project Overview_</div>', unsafe_allow_html=True)
