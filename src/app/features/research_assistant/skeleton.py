@@ -17,7 +17,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 MODEL_NAME = "meta-llama/Llama-2-7b-chat-hf"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 PROCESSED_PDFS_FILE = "src/app/features/research_assistant/checkpoints/processed_pdfs.pkl"
-VECTOR_STORE_FILE = "src/app/features/research_assistant/checkpoints/vector_store.pkl"
+VECTOR_STORE_FILE = "src/app/features/research_assistant/checkpoints/vector_store"
 
 @st.cache_resource
 def load_models(hg_api_key: str, debug: bool = False) -> Tuple[DocumentProcessor, QASystem]:
@@ -58,7 +58,7 @@ def run_assistance(hg_api_key: str, debug: bool = False) -> None:
     document_processing, qa_system = load_models(hg_api_key, debug)
 
     data = st.session_state.get('data', {})
-    pdf_urls = data.get('pdf_link', [])[:500]
+    pdf_urls = data.get('pdf_link', [])[:250]
     print(f"pdf files in vector store:\n___________\n{pdf_urls}\n")
 
     processed_pdfs = load_processed_pdfs()
@@ -66,7 +66,7 @@ def run_assistance(hg_api_key: str, debug: bool = False) -> None:
     print(f"new_pdfs:\n___________\n{new_pdfs}\n")
 
     if not new_pdfs:
-        st.info("All PDFs have already been processed.")
+        st.info("Vector store already up to date")
 
     if st.button("Load Documents"):
         handle_document_loading(new_pdfs, document_processing, processed_pdfs, debug)
@@ -119,7 +119,7 @@ def process_pdfs_batch(batch: List[str], document_processing: DocumentProcessor,
 
 #def handle_question_submission(user_question: str, qa_system: QASystem, user_level: str):
 #    """Handle user question submission."""
-#    try:
+#   try:
 #        response = qa_system.ask_question(user_question, vector_store, user_level=user_level)
 #        st.markdown(f"### Answer:\n{response}")
 #    except ValueError as e:

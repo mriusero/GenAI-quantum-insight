@@ -1,7 +1,7 @@
 import gc
 import os
 
-#import src.app.features.arxiv_data_manager as arxiv        # Maintenance mode
+import src.app.features.arxiv_data_manager as arxiv        # Maintenance mode
 import streamlit as st
 
 
@@ -55,12 +55,12 @@ def main_layout():
     with col2:
         st.text("")
         st.text("")
-        #arxiv.search_and_update(                       # Maintenance mode
-        #    db_name="./database/arxiv_data.db",
-        #    query="all:quantum",
-        #    max_results=10000,
-        #    total_results_limit=10000
-        #)
+        arxiv.search_and_update(                       # Maintenance mode
+            db_name="./database/arxiv_data.db",
+            query="all:quantum",
+            max_results=250,
+            total_results_limit=1000
+        )
 
     st.markdown('---')
 

@@ -25,7 +25,7 @@ RUN poetry install --no-dev  # Optional: install only production dependencies
 COPY . /app/
 
 # Téléchargement du modèle en_core_web_sm de spaCy
-RUN python -m spacy download en_core_web_sm
+RUN poetry run python -m spacy download en_core_web_sm
 
 # Expose the port used by Streamlit
 EXPOSE 8501
