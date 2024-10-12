@@ -1,7 +1,7 @@
 # Use a slim Python image as the base
 FROM python:3.9.13-slim
 
-# Set the working directory
+# Set the working directory+
 WORKDIR /app
 
 # Install necessary system dependencies
@@ -23,6 +23,9 @@ RUN poetry install --no-dev  # Optional: install only production dependencies
 
 # Copy the rest of the source code into the container
 COPY . /app/
+
+# Téléchargement du modèle en_core_web_sm de spaCy
+RUN python -m spacy download en_core_web_sm
 
 # Expose the port used by Streamlit
 EXPOSE 8501

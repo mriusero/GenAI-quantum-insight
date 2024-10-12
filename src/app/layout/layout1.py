@@ -1,6 +1,6 @@
 import streamlit as st
 from huggingface_hub import HfApi
-
+import os
 from ..components.utils import initialize_hg_api_key
 from ..features import research_assistant
 
@@ -18,6 +18,8 @@ def page_1():
 
     debug = st.sidebar.toggle("Debug mode")
     st.toast("Debug mode is on" if debug else "Debug mode is off")
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("\nDebug mode is on\n_____________________" if debug else "\nDebug mode is off\n_____________________")
 
     st.sidebar.write(f"## Connexion test")
     st.sidebar.write(api.whoami(hg_api_key))
