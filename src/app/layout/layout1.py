@@ -1,7 +1,9 @@
 import streamlit as st
-
+from huggingface_hub import HfApi
+import os
 from ..components.utils import initialize_hg_api_key
-from ..features.vectors_store.document_processor import ResearchAssistant
+from ..features import research_assistant
+
 
 from huggingface_hub import HfApi
 
@@ -13,10 +15,14 @@ def page_1():
 
     api = HfApi()
     hg_api_key = initialize_hg_api_key()
-    st.write(f"## Connexion test")
-    st.write(api.whoami(hg_api_key))
-    
-    #pdf_urls = ["http://arxiv.org/pdf/2405.20113v2", "http://arxiv.org/pdf/2410.07099v1"]
 
-    #agent = ResearchAssistant(hg_api_key)
-    #agent.run_assistance(pdf_urls)
+    debug = st.sidebar.toggle("Debug mode")
+    st.toast("Debug mode is on" if debug else "Debug mode is off")
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("\nDebug mode is on\n_____________________" if debug else "\nDebug mode is off\n_____________________")
+
+    st.sidebar.write(f"## Connexion test")
+    st.sidebar.write(api.whoami(hg_api_key))
+
+    research_assistant.run_assistance(hg_api_key, debug=debug)
+

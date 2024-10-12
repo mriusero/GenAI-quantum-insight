@@ -9,7 +9,7 @@ class ArxivAPIClient:
         """Initialize the API client with the base URL."""
         self.base_url = "http://arxiv.org/api/query"
 
-    def fetch_arxiv_data(self, query="all:quantum", max_results=10000, total_results_limit=10000):
+    def fetch_arxiv_data(self, query="all:quantum", max_results=100, total_results_limit=250):
         """Fetch Arxiv data based on a search query."""
 
         total_results = 0
