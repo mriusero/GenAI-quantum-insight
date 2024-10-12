@@ -14,7 +14,7 @@ from .document_processing import DocumentProcessor
 from .qa_system import QASystem
 from langchain_huggingface import HuggingFaceEmbeddings
 
-MODEL_NAME = "meta-llama/Llama-2-7b-chat-hf"
+MODEL_NAME = "facebook/bart-large-cnn"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 PROCESSED_PDFS_FILE = "src/app/features/research_assistant/checkpoints/processed_pdfs.pkl"
 VECTOR_STORE_FILE = "src/app/features/research_assistant/checkpoints/vector_store"
@@ -71,11 +71,8 @@ def run_assistance(hg_api_key: str, debug: bool = False) -> None:
     if st.button("Load Documents"):
         handle_document_loading(new_pdfs, document_processing, processed_pdfs, debug)
 
-    # User expertise and question input
-    user_level = st.selectbox("Select your expertise level:", ["Beginner", "Intermediate", "Expert"])
-    user_question = st.text_input("Ask a question:")
- #   if st.button("Submit"):
- #       handle_question_submission(user_question, qa_system, user_level)
+    qa_system.initialize_ui(VECTOR_STORE_FILE)
+
 
 def handle_document_loading(new_pdfs: List[str], document_processing: DocumentProcessor, processed_pdfs: List[str], debug: bool = False):
     """Handle the process of loading and processing new documents."""
@@ -117,10 +114,3 @@ def process_pdfs_batch(batch: List[str], document_processing: DocumentProcessor,
 
     gc.collect()
 
-#def handle_question_submission(user_question: str, qa_system: QASystem, user_level: str):
-#    """Handle user question submission."""
-#   try:
-#        response = qa_system.ask_question(user_question, vector_store, user_level=user_level)
-#        st.markdown(f"### Answer:\n{response}")
-#    except ValueError as e:
-#        st.error(str(e))
