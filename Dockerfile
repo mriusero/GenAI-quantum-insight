@@ -19,7 +19,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 - && \
 ENV PATH="/root/.local/bin:$PATH"
 
 # Install project dependencies via Poetry
-RUN poetry install --no-dev  # Optional: install only production dependencies
+RUN poetry install # --no-dev  Optional: install only production dependencies
 
 # Copy the rest of the source code into the container
 COPY . /app/
