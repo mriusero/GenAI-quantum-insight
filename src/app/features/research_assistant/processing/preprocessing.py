@@ -1,10 +1,13 @@
 import gc
 from typing import List
+
 import chromadb
 import streamlit as st
+
 from ..processing.preprocessor import DocumentProcessor
 from ..utilities import save_processed_pdfs
 from ..utilities.helper import VECTOR_STORE_FILE
+
 
 def create_batches(urls: List[str], batch_size_percentage: int) -> List[List[str]]:
     """Split URLs into batches based on a percentage size."""

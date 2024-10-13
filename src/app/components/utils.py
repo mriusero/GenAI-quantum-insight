@@ -20,7 +20,7 @@ def load_data(db_path="./database/arxiv_data.db"):
 
 def get_secret():
     """Retrieve the secret API key from AWS Secrets Manager."""
-    secret_name = "HG_API_KEY"
+    secret_name = "HG_API_KEY_PRO"
     region_name = "eu-west-3"
     session = boto3.session.Session() # Create a Secrets Manager client
     client = session.client(
@@ -34,7 +34,7 @@ def get_secret():
     except ClientError as e: # For a list of exceptions thrown, see https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
         raise e
     secret_dict = json.loads(get_secret_value_response['SecretString'])
-    return secret_dict['HG_API_KEY']
+    return secret_dict['HG_API_KEY_PRO']
 
 def initialize_hg_api_key():
     """Initialize and return the Hugging Face API key."""
