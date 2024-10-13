@@ -58,8 +58,8 @@ def main_layout():
         arxiv.search_and_update(                       # Maintenance mode
             db_name="./database/arxiv_data.db",
             query="all:quantum",
-            max_results=250,
-            total_results_limit=1000
+            max_results=300,
+            total_results_limit=300
         )
 
     st.markdown('---')
