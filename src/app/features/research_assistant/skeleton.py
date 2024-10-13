@@ -5,7 +5,7 @@ import streamlit as st
 from .processing.preprocessing import handle_document_loading
 from .processing.preprocessor import DocumentProcessor
 from .qa_system.qa_system import QASystem
-from .utilities.helper import VECTOR_STORE_FILE, load_processed_pdfs
+from .utilities.helper import VECTOR_STORE_FILE, load_processed_pdfs, display_files
 
 MODEL_NAME = "meta-llama/Llama-2-7b-chat-hf"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
@@ -33,11 +33,12 @@ def run_assistance(hg_api_key: str, debug: bool = False) -> None:
     document_processing, qa_system = load_models(hg_api_key, debug)
 
     pdf_urls = st.session_state.get('data', {}).get('pdf_link', [])[:300]
-    print(f"PDF files in vector store:\n{pdf_urls}\n")
-
     processed_pdfs = load_processed_pdfs()
+
     new_pdfs = [url for url in pdf_urls if url not in processed_pdfs]
-    print(f"New PDFs:\n{new_pdfs}\n")
+    already_processed = [url for url in pdf_urls if url in processed_pdfs]
+
+    display_files(new_pdfs, already_processed)
 
     if new_pdfs:
         if st.button("Vectorize Documents"):
