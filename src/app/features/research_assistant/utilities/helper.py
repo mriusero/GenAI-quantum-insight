@@ -5,7 +5,7 @@ from typing import List
 import streamlit as st
 
 PROCESSED_PDFS_FILE = "src/app/features/research_assistant/checkpoints/processed_pdfs.pkl"
-VECTOR_STORE_FILE = "src/app/features/research_assistant/checkpoints/vector_store"
+VECTOR_STORE_FILE = "src/app/features/research_assistant/checkpoints/.chromadb"
 
 def load_processed_pdfs() -> List[str]:
     """Load processed PDFs from a pickle file, handle errors gracefully."""
