@@ -1,9 +1,14 @@
 import gc
 import os
 
-import src.app.features.arxiv_data_manager as arxiv        # Maintenance mode
 import streamlit as st
+from huggingface_hub import HfApi
 
+from .components import initialize_hg_api_key, load_data
+from .features import arxiv_data_manager as arxiv
+from .features import research_assistant as agent
+
+global update_message, debug, document_processor, qa_system
 
 def load_css():
     """Load custom CSS styles for the Streamlit app."""
@@ -11,75 +16,97 @@ def load_css():
     with open(css_path) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-
 def main_layout():
     """Set up the main layout of the Streamlit application."""
     from .components import github_button
-    from .layout import page_0, page_1, page_2, page_3, page_4, page_5, page_6
+    from .layout import page_0, page_1, page_2
 
     st.set_page_config(
-        page_title="Quantum Insights Agent",
+        page_title="Quantum Insights",
         layout='wide',
         initial_sidebar_state="auto",
     )
-
     load_css()
-
-    st.sidebar.markdown("# GenerativeAI \n"
-                        " ## *Quantum Insights Agent*\n")
-
-    page = st.sidebar.radio("Table of contents_", ["#0 Introduction_",
-                                                   "#1 Something_",
-                                                   "#2 Something_",
-                                                   "#3 Something_",
-                                                   "#4 Something_",
-                                                   "#5 Something_",
-                                                   "#6 Something_"
+    st.sidebar.markdown("## *🤖 GenerativeAI* \n")
+    page = st.sidebar.radio("Table of contents",  ["Overview_",
+                                                   "Database_",
+                                                   "Ask questions_",
                                                    ])
+    ## -- INIT -- ##
+    if 'data' not in st.session_state:                                  # Data loading
+        st.session_state['data'] = load_data()
 
-    # -- LAYOUT --
-    col1, col2 = st.columns([8, 4])
-    with col1:
-        global update_message
-        st.markdown('<div class="title"> Quantum Insights</div>', unsafe_allow_html=True)
-
-        colA, colB, colC = st.columns([2, 11, 1])
-
-        with colA:
-            github_button('https://github.com/mriusero/GenAI-quantum-insight')  # GitHub button
-
-        with colB:
-            st.text("")
-            st.markdown("#### *Quantum Computing Vulgarisation Agent* ")
-
-    with col2:
-        st.text("")
-        st.text("")
-        arxiv.search_and_update(                       # Maintenance mode
-            db_name="./database/arxiv_data.db",
-            query="all:quantum",
-            max_results=300,
-            total_results_limit=300
+    debug = st.sidebar.toggle("Debug mode")                             # Debug mode
+    st.toast("Debug mode is on" if debug else "Debug mode is off")
+    os.system('cls' if os.name == 'nt' else 'clear')
+    if debug:
+        print(
+"""
+🔧 Debug mode is ON 
+=====================
+"""
+        )
+    else:
+        print(
+"""
+🚫 Debug mode is OFF
+=====================
+"""
+        )
+    logo_url = "https://huggingface.co/front/assets/huggingface_logo.svg"    # Hugging Face API connexion test
+    api = HfApi()
+    hg_api_key = initialize_hg_api_key()
+    result = api.whoami(hg_api_key)
+    try:
+        result = api.whoami(hg_api_key)
+        if result is not None:
+            st.sidebar.markdown(
+                f'<p style="color:silver; font-size:16px;">'
+                f'<img src="{logo_url}" width="30" style="vertical-align:middle; margin-right:12px;"/>'
+                f'API key found successfully !</p>',
+                unsafe_allow_html=True
+            )
+        else:
+            st.sidebar.markdown(
+                f'<p style="color:red; font-size:16px;">'
+                f'<img src="{logo_url}" width="30" style="vertical-align:middle; margin-right:10px;"/>'
+                f'Invalid API key ❌</p>',
+                unsafe_allow_html=True
+            )
+    except Exception as e:
+        st.sidebar.markdown(
+            f'<p style="color:red; font-size:16px;">'
+            f'<img src="{logo_url}" width="30" style="vertical-align:middle; margin-right:10px;"/>'
+            f'Error: {e} ❌</p>',
+            unsafe_allow_html=True
         )
 
+    document_processor, qa_system = agent.models_loading(hg_api_key, debug)    # Load models
+    print("\n")
+    # -- LAYOUT -- ##
+    global update_message
+    st.markdown('<div class="title"> Quantum Insights ⚡️</div>', unsafe_allow_html=True)    # Project title
+    colA, colB= st.columns([8, 4])
+    with colA:
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            st.text("")                                                               # Project description
+            st.markdown("#### *An AI agent specialized in quantum physics research, helping you to understand the latest sciences discoveries.*")
+    with colB:
+        col1, col2 = st.columns([2,1])
+        with col2:
+            github_button('https://github.com/mriusero/GenAI-quantum-insight')  # GitHub button
+            st.write("***See on Github***")
     st.markdown('---')
 
     # -- PAGE RENDERING --
-    if page == "#0 Introduction_":
+    if page == "Overview_":
         page_0()
-    elif page == "#1 Something_":
-        page_1()
-    elif page == "#2 Something_":
-        page_2()
-    elif page == "#3 Something_":
-        page_3()
-    elif page == "#4 Something_":
-        page_4()
-    elif page == "#5 Something_":
-        page_5()
-    elif page == "#6 Something_":
-        page_6()
+    elif page == "Database_":
+        page_1(debug, arxiv, document_processor)
+    elif page == "Ask questions_":
+        page_2(debug, agent, qa_system)
 
     st.sidebar.markdown("&nbsp;")
-
     gc.collect()
+

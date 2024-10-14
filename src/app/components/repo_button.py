@@ -5,7 +5,7 @@ def github_button(url, logo_url="https://github.githubassets.com/favicons/favico
         .github-button {{
             display: inline-flex;
             align-items: center;
-            padding: 2px;
+            padding: 20px;
             border: none;
             background-color: transparent;
             cursor: pointer;

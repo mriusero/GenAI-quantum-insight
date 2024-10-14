@@ -14,8 +14,6 @@ from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
 warnings.filterwarnings("ignore", category=UserWarning, module='torch')
-logging.basicConfig(level=logging.INFO)
-
 
 class DocumentProcessor:
     def __init__(self, chunk_size: int = 512, chunk_overlap: int = 206,
