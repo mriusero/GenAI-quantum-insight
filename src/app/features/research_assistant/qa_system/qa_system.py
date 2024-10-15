@@ -6,7 +6,6 @@ from typing import Dict, List, Any, Union
 
 from .qa_helper import QA_helper
 
-
 class QASystem:
     def __init__(self,
                  api_key: str,
@@ -47,21 +46,20 @@ class QASystem:
         """
         Generate a structured response object using the retrieved documents.
         """
+
         context: str = self.helper.add_context(usr_level)
         query: str = f"{query}"
+        query += "\nAnswer:\n--------------------------\n"
 
-        response_docs: List[Dict[str, Union[str, int]]] = []
-        for i, metadata in enumerate(retrieved_docs.get('metadatas', [[]])[0][:2]):
-            doc_info = {
-                "document_number": i + 1,
-                "title": metadata.get('title', 'Titre inconnu'),
-                "author": metadata.get('author', 'Auteur inconnu'),
-                "published": metadata.get('published', 'Date de publication non disponible'),
-                "summary": metadata.get('summary', 'Résumé non disponible')[:300],
-                "pdf_link": metadata.get('pdf_link', 'Lien PDF non disponible'),
-                "text": metadata.get('text', 'Texte non disponible')
-            }
-            response_docs.append(doc_info)
+        response_docs = [{
+            "document_number": i + 1,
+            "title": metadata.get('title', 'Titre inconnu'),
+            "author": metadata.get('author', 'Auteur inconnu'),
+            "published": metadata.get('published', 'Date de publication non disponible'),
+            "summary": metadata.get('summary', 'Résumé non disponible')[:300],
+            "pdf_link": metadata.get('pdf_link', 'Lien PDF non disponible'),
+            "text": metadata.get('text', 'Texte non disponible')
+        } for i, metadata in enumerate(retrieved_docs.get('metadatas', [[]])[0][:5])]
 
         input: Dict[str, Any] = {
             "inputs": f"{context}\n{query}",
@@ -82,7 +80,7 @@ class QASystem:
             }
         }
         if self.debug:
-            st.write(f"### Prompt context:\n {context}")
+            st.write(f"### Prompt context:\n{context}")
             st.write(f"### User query:\n {query}")
             st.write(f"### Retrieval Query Result:\n")
             st.json(retrieved_docs)
@@ -106,19 +104,16 @@ class QASystem:
             "options": options
         }
 
-        max_iterations = 5
+        max_iterations = 7
         final_answer = initial_feedback.replace(initial_input, "").replace("Answer:", "").strip()
         prev_feedback = ""
-
         for _ in range(max_iterations):
             new_feedback = self.query(headers, new_input)
-
             if not new_feedback:
                 print("WARNING: Received empty feedback from query.")
                 break
 
             new_answer = new_feedback.replace(new_input["inputs"], "").replace("Answer:", "").strip()
-
             clean_new_answer = ''.join(new_answer.split()).lower()          # For comparison
             clean_prev_feedback = ''.join(prev_feedback.split()).lower()
 
@@ -145,7 +140,6 @@ class QASystem:
                                                      usr_level=usr_level,
                                                      temperature=temperature,
                                                      max_tokens=max_tokens)
-
 
             total_tokens = self.helper.count_tokens(usr_question)   # Check if the total tokens exceed the limit
             for doc in input['documents']:
@@ -176,5 +170,5 @@ class QASystem:
             return final_answer if final_answer else "No valid answer found"
 
         except Exception as e:
-            st.error(f"Erreur système :: {str(e)}")
+            st.error(f"Erreur système : {str(e)}")
             return "An error occurred while processing your question."

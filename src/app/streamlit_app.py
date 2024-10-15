@@ -19,7 +19,7 @@ def load_css():
 def main_layout():
     """Set up the main layout of the Streamlit application."""
     from .components import github_button
-    from .layout import page_0, page_1, page_2
+    from .layout import page_0, page_1, page_2, page_3
 
     st.set_page_config(
         page_title="Quantum Insights",
@@ -31,6 +31,7 @@ def main_layout():
     page = st.sidebar.radio("Table of contents",  ["Overview_",
                                                    "Database_",
                                                    "Ask questions_",
+                                                   "Latest_",
                                                    ])
     ## -- INIT -- ##
     if 'data' not in st.session_state:                                  # Data loading
@@ -79,7 +80,6 @@ def main_layout():
             f'Error: {e} ❌</p>',
             unsafe_allow_html=True
         )
-
     document_processor, qa_system = agent.models_loading(hg_api_key, debug)    # Load models
 
     print("\n")
@@ -106,6 +106,8 @@ def main_layout():
         page_1(debug, arxiv, document_processor)
     elif page == "Ask questions_":
         page_2(debug, agent, qa_system)
+    elif page == "Latest_":
+        page_3(debug, qa_system)
 
     st.sidebar.markdown("&nbsp;")
     gc.collect()

@@ -1,7 +1,6 @@
 import streamlit as st
-
+import json
 from src.app.features.research_assistant import store_management
-
 
 def page_1(debug, arxiv, document_processor):
     st.markdown('<div class="header">Database_</div>', unsafe_allow_html=True)
