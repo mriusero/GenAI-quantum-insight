@@ -27,7 +27,7 @@ def main_layout():
         initial_sidebar_state="auto",
     )
     load_css()
-    st.sidebar.markdown("## *🤖 GenerativeAI* \n")
+    st.sidebar.markdown("## *🤖 Generative AI* \n")
     page = st.sidebar.radio("Table of contents",  ["Overview_",
                                                    "Database_",
                                                    "Ask questions_",
@@ -37,7 +37,7 @@ def main_layout():
         st.session_state['data'] = load_data()
 
     debug = st.sidebar.toggle("Debug mode")                             # Debug mode
-    st.toast("Debug mode is on" if debug else "Debug mode is off")
+    #st.toast("Debug mode is on" if debug else "Debug mode is off")
     os.system('cls' if os.name == 'nt' else 'clear')
     if debug:
         print(
@@ -56,7 +56,6 @@ def main_layout():
     logo_url = "https://huggingface.co/front/assets/huggingface_logo.svg"    # Hugging Face API connexion test
     api = HfApi()
     hg_api_key = initialize_hg_api_key()
-    result = api.whoami(hg_api_key)
     try:
         result = api.whoami(hg_api_key)
         if result is not None:
@@ -82,6 +81,7 @@ def main_layout():
         )
 
     document_processor, qa_system = agent.models_loading(hg_api_key, debug)    # Load models
+
     print("\n")
     # -- LAYOUT -- ##
     global update_message

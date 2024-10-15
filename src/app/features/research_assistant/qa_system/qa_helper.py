@@ -25,9 +25,9 @@ class QA_helper:
 
         if self.debug:
             st.write("## Question Embedding:\n", query_embedding)
-            st.write("## Retrieval Query Result:\n", results)
 
         return results
+
 
     def count_tokens(self, text: str) -> int:
         """
@@ -37,11 +37,27 @@ class QA_helper:
         return len(tokens)
 
     @staticmethod
-    def prolonge_answer(conversation_memory, feedback: str) -> str:
+    def add_context(usr_level: str) -> str:
         """
         Creates a prompt based on the conversation history.
         """
-        prompt = f"Complete the following text: {feedback}\n\n"
-        for entry in conversation_memory:
-            prompt += f"User: {entry['question']}  \nAssistant: {entry['response']}\n\n"
-        return prompt.strip()
+        level_adaptation = {
+            "Beginner": "Provide a straightforward and easy-to-understand explanation for the following question, avoiding technical terms or complex concepts:",
+            "Intermediate": "Provide a clear and moderately detailed explanation for the following question, including some technical terms but keeping the explanation accessible to someone with a basic understanding of the topic:",
+            "Advanced": "Provide a comprehensive and detailed answer for the following question, incorporating technical terms and concepts, and offering a deeper exploration of the topic, suitable for someone with substantial knowledge in the area:",
+            "Expert": "Provide a highly technical, in-depth, and nuanced answer for the following question, using advanced terminology and concepts, aimed at someone with expert-level understanding of the subject matter:"
+        }
+        return level_adaptation.get(usr_level, level_adaptation[f"{usr_level}"])
+
+    @staticmethod
+    def prolonge_answer(usr_level: str) -> str:
+        """
+        Creates a prompt based on the conversation history.
+        """
+        level_adaptation = {
+            "Beginner": "Please provide a simple and clear continuation of the following text.",
+            "Intermediate": "Please provide a moderately detailed continuation of the following text.",
+            "Advanced": "Please provide a thorough and detailed continuation of the following text.",
+            "Expert": "Please provide an in-depth and highly technical continuation of the following text."
+        }
+        return level_adaptation.get(usr_level, level_adaptation[f"{usr_level}"])

@@ -9,7 +9,7 @@ from .utilities.helper import VECTOR_STORE_FILE
 MODEL_NAME = "meta-llama/Llama-2-7b-chat-hf"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
-@st.cache_resource()
+@st.cache_resource
 def models_loading(hg_api_key: str, debug: bool = False) -> Tuple[DocumentProcessor, QASystem]:
     """Load and cache document processor and QA system models."""
     print("\n === Hugging Face logging ===\n")
