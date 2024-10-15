@@ -31,7 +31,7 @@ def main_layout():
     page = st.sidebar.radio("Table of contents",  ["Overview_",
                                                    "Database_",
                                                    "Ask questions_",
-                                                   "Latest_",
+                                                   "Latest chats_",
                                                    ])
     ## -- INIT -- ##
     if 'data' not in st.session_state:                                  # Data loading
@@ -106,7 +106,7 @@ def main_layout():
         page_1(debug, arxiv, document_processor)
     elif page == "Ask questions_":
         page_2(debug, agent, qa_system)
-    elif page == "Latest_":
+    elif page == "Latest chats_":
         page_3(debug, qa_system)
 
     st.sidebar.markdown("&nbsp;")

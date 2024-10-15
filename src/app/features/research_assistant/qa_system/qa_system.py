@@ -48,7 +48,7 @@ class QASystem:
         """
 
         context: str = self.helper.add_context(usr_level)
-        query: str = f"{query}"
+        query: str = f"User:{query}"
         query += "\nAnswer:\n--------------------------\n"
 
         response_docs = [{
@@ -107,6 +107,9 @@ class QASystem:
         max_iterations = 7
         final_answer = initial_feedback.replace(initial_input, "").replace("Answer:", "").strip()
         prev_feedback = ""
+
+        response_placeholder = st.empty()
+
         for _ in range(max_iterations):
             new_feedback = self.query(headers, new_input)
             if not new_feedback:
@@ -125,8 +128,17 @@ class QASystem:
             final_answer += new_answer                  # Update final answer
             prev_feedback = new_answer                  # Update previous feedback
             new_input["inputs"] = new_feedback          # Update input with new feedback
+            response_placeholder.markdown(f"<div class='system-bubble'>{final_answer}</div>", unsafe_allow_html=True)
 
+        response_placeholder.empty()
         return final_answer.strip()
+
+    def trim_conversation_history(max_length=5):
+        """
+        Trim the conversation history to avoid excessive memory usage.
+        """
+        if len(st.session_state.conversation_history) > max_length:
+            st.session_state.conversation_history = st.session_state.conversation_history[-max_length:]
 
     def ask_question(self, usr_question: str, usr_level: str = "Intermediate",
                      temperature: float = 0.0, max_tokens: int = 500) -> str:
@@ -134,8 +146,17 @@ class QASystem:
         Process the user's question using retrieval-augmented generation (RAG).
         """
         try:
+            # NEW: Ajouter l'historique de conversation au prompt.
+            conversation_history = "\n".join(
+                [f"User: {msg['content']}" if msg["role"] == "user" else f"System: {msg['content']}"
+                 for msg in st.session_state.messages]
+            )
+
+            # Ajout du contexte de la conversation précédente au message actuel.
+            query_with_history = f"{conversation_history}\n{usr_question}\n"
+
             retrieved_docs = self.helper.retrieve_documents("arxiv_papers_collection", usr_question)
-            input = self.generate_augmented_response(query=usr_question,
+            input = self.generate_augmented_response(query=query_with_history,
                                                      retrieved_docs=retrieved_docs,
                                                      usr_level=usr_level,
                                                      temperature=temperature,
@@ -166,6 +187,8 @@ class QASystem:
 
             final_answer = self.extend_response(feedback, input, headers)
             print(f"\nReturning final_answer:\n----------------------------------------------------\n{final_answer}")
+
+            st.session_state.response_placeholder = None
 
             return final_answer if final_answer else "No valid answer found"
 

@@ -3,11 +3,14 @@ from typing import List, Dict, Any
 from datetime import datetime
 import json
 import os
+import gc
 
 def initialize_session_state():
     """Iniyialize the session variables if they are not already defined."""
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    if "conversation_history" not in st.session_state:
+        st.session_state.conversation_history = []  # NEW: Buffer for conversation memory
     if "user_expertise" not in st.session_state:
         st.session_state.user_expertise = "Débutant"
     if "input_text" not in st.session_state:
@@ -42,8 +45,11 @@ def display_columns():
     with col5:
         add_empty_lines(3)
         if st.button("Reset conversation"):
-            st.session_state.messages = []
+            for key in st.session_state.keys():
+                del st.session_state[key]
             st.toast("Conversation reinitialised !")
+            gc.collect()
+            initialize_session_state()
 
 
 def display_chat_interface(chat_container):
@@ -90,6 +96,13 @@ def save_conversation():
                 data=json_data
             )
 
+def trim_conversation_history(max_length=6):
+    """
+    Trim the conversation history to avoid excessive memory usage.
+    """
+    if len(st.session_state.messages) > max_length:
+        st.session_state.messages = st.session_state.messages[-max_length:]
+
 def user_interface(qasystem: Any) -> None:
     """Main function that handles the user interface."""
     initialize_session_state()
@@ -107,11 +120,10 @@ def user_interface(qasystem: Any) -> None:
     user_input = st.text_input("Votre question :", value=st.session_state.input_text)
 
     if st.button("Submit") and user_input != "":
-        st.session_state.messages.append({"role": "user", "content": user_input})
         st.session_state.input_text = ""
 
         with st.spinner("Llama is thinking..."):
-            if len(st.session_state.messages) == 1:
+           # if len(st.session_state.messages) == 1:
                 first_question = user_input
                 llm_response = qasystem.ask_question(
                     usr_question=first_question,
@@ -119,17 +131,19 @@ def user_interface(qasystem: Any) -> None:
                     temperature=st.session_state.temperature,
                     max_tokens=st.session_state.max_tokens
                 )
+                st.session_state.messages.append({"role": "user", "content": user_input})
                 st.session_state.messages.append({"role": "system", "content": llm_response})
-            else:
-                previous_exchange = st.session_state.messages[-1]["content"]
-                st.session_state.loading = True
-                llm_response = qasystem.ask_question(
-                    usr_question= user_input,
-                    usr_level=st.session_state.user_expertise,
-                    temperature=st.session_state.temperature,
-                    max_tokens=st.session_state.max_tokens,
-                )
-                st.session_state.messages.append({"role": "system", "content": llm_response})
+            #else:
+            #    #previous_exchange = st.session_state.messages[-1]["content"]
+            #    st.session_state.loading = True
+            #    llm_response = qasystem.ask_question(
+            #        usr_question= user_input,
+            #        usr_level=st.session_state.user_expertise,
+            #        temperature=st.session_state.temperature,
+            #        max_tokens=st.session_state.max_tokens,
+            #    )
+            #    st.session_state.messages.append({"role": "user", "content": user_input})
+            #    st.session_state.messages.append({"role": "system", "content": llm_response})
         display_chat_interface(chat_container)
 
     st.write("___")

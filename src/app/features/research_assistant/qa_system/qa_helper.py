@@ -79,4 +79,4 @@ Now,"""
             "Advanced": "provide a comprehensive and detailed answer for the following query, incorporating technical terms and concepts, and offering a deeper exploration of the topic, suitable for someone with substantial knowledge in the area:\n",
             "Expert": "provide a highly technical, in-depth, and nuanced answer for the following query, using advanced terminology and concepts, aimed at someone with expert-level understanding of the subject matter:\n"
         }
-        return instruction + level_adaptation.get(usr_level, "Invalid user level") + "\nQuery:"
+        return instruction + level_adaptation.get(usr_level, "Invalid user level")
