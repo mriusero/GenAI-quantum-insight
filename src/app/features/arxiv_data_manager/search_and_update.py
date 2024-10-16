@@ -8,7 +8,7 @@ from .arxiv_parser import ArxivXMLParser
 
 def search_and_update(db_name, query="all:quantum", max_results=100, total_results_limit=100):
     """Search and update the database with Arxiv data."""
-    col1, col2, col3 = st.columns([3, 6, 3])
+    col1, col2, col3 = st.columns([3, 3, 3])
 
     with col1:
         search_clicked = st.button("Search release")

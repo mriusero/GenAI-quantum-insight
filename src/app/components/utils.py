@@ -1,12 +1,12 @@
-import sqlite3
 import json
 import os
-from environs import Env, ErrorMapping
-import boto3
-from botocore.exceptions import ClientError
+import sqlite3
 
+import boto3
 import pandas as pd
 import streamlit as st
+from botocore.exceptions import ClientError
+from environs import Env, ErrorMapping
 
 
 @st.cache_data

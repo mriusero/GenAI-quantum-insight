@@ -14,14 +14,14 @@ def create_batches(urls: List[str], batch_size_percentage: int) -> List[List[str
     batch_size = max(1, len(urls) * batch_size_percentage // 100)
     return [urls[i:i + batch_size] for i in range(0, len(urls), batch_size)]
 
-def handle_document_loading(new_pdfs: List[str], document_processing: DocumentProcessor, processed_pdfs: List[str], debug: bool = False):
+def handle_document_loading(new_pdfs: List[str], document_processor: DocumentProcessor, processed_pdfs: List[str], debug: bool = False):
     """Manage loading and processing of new documents in batches."""
     batches = create_batches(new_pdfs, 25)
     progress_bar = st.progress(0)
 
     for i, batch in enumerate(batches, 1):
         st.write(f"Processing batch {i} / {len(batches)}: {batch}")
-        process_pdfs_batch(batch, document_processing, processed_pdfs, debug)
+        process_pdfs_batch(batch, document_processor, processed_pdfs, debug)
         progress_bar.progress(i / len(batches))
 
 def process_pdfs_batch(batch: List[str], document_processing: DocumentProcessor, processed_pdfs: List[str], debug: bool = False):

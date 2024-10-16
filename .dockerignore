@@ -7,7 +7,9 @@ LICENSE
 
 src/.env
 
+
 ## --> directories
 .git*
 tests/
 notebook/
+database/.conversations/
