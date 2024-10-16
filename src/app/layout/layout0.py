@@ -34,7 +34,7 @@ Dans les domaines en constante évolution tel que la technologie, il est essenti
 ## Méthodologie_
 
 **RAG (Retrieval-Augmented Generation)**
-   - Utilisation d’une base de données contenant plus de 10 000 URL vers des fichiers PDF de papiers de recherche.
+   - Utilisation d’une base de données contenant des papiers de recherche.
    - Intégration de techniques de recherche pour optimiser l'extraction et la génération de contenu.
 
 ---
@@ -50,7 +50,7 @@ Dans les domaines en constante évolution tel que la technologie, il est essenti
 
 ## Conclusion_
 
-Ce projet a pour ambition de créer un pont entre la recherche avancée et le grand public, rendant les informations sur l'informatique quantique et la blockchain accessibles à tous. Grâce à un modèle IA bien réglé, nous espérons démocratiser l'accès à ces connaissances et stimuler l'innovation dans ces domaines passionnants.
+Ce projet a pour ambition de créer un pont entre la recherche avancée et le grand public, rendant les informations sur l'informatique quantique et la blockchain accessibles à tous. Grâce à un modèle IA générative bien réglé, l'objectif est de démocratiser l'accès à ces connaissances et stimuler l'innovation dans ces domaines passionnants.
 
 ---
 

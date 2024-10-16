@@ -1,10 +1,11 @@
+from typing import Dict, List, Any
+
 import requests
 import streamlit as st
-import json
 from langchain_huggingface import HuggingFaceEndpoint
-from typing import Dict, List, Any, Union
 
 from .qa_helper import QA_helper
+
 
 class QASystem:
     def __init__(self,
@@ -23,6 +24,7 @@ class QASystem:
         self.conversation_memory: List[Dict[str, str]] = []
         self.helper = QA_helper(embedding_model=embedding_model, debug=self.debug, vector_store_file=vector_store_file)
 
+
     def query(self, headers: Dict[str, str], data: Dict[str, Any]) -> str:
         """
         Send a query to the Hugging Face API and retrieve the response.
@@ -37,6 +39,7 @@ class QASystem:
         else:
             return f"Erreur: {response.status_code}"
 
+
     def generate_augmented_response(self,
                                     query: str,
                                     retrieved_docs: Dict[str, Any],
@@ -46,10 +49,9 @@ class QASystem:
         """
         Generate a structured response object using the retrieved documents.
         """
-
         context: str = self.helper.add_context(usr_level)
-        query: str = f"User:{query}"
-        query += "\nAnswer:\n--------------------------\n"
+        query: str = f"{query}"
+        query += "\nsystem:"
 
         response_docs = [{
             "document_number": i + 1,
@@ -90,27 +92,26 @@ class QASystem:
             st.json(input)
         return input
 
+
     def extend_response(self, initial_feedback: str, input: Dict[str, Any], headers: Dict[str, str]) -> str:
         """
         Extend the response by querying until the answer stabilizes or the max iterations are reached.
         """
-        initial_input = input["inputs"]
+        initial_input = input["inputs"]    # Update the input with the previous exchanges
         attachments = input["documents"]
         options = input["options"]
-
         new_input = {
             "inputs": initial_feedback,
             "documents": attachments,
             "options": options
         }
 
-        max_iterations = 7
-        final_answer = initial_feedback.replace(initial_input, "").replace("Answer:", "").strip()
+        max_iterations = 7    # Init for response extension
         prev_feedback = ""
-
         response_placeholder = st.empty()
+        final_answer = initial_feedback.replace(initial_input, "").replace("Answer:", "").strip()
 
-        for _ in range(max_iterations):
+        for _ in range(max_iterations):                         # Loop to extend the response
             new_feedback = self.query(headers, new_input)
             if not new_feedback:
                 print("WARNING: Received empty feedback from query.")
@@ -120,41 +121,33 @@ class QASystem:
             clean_new_answer = ''.join(new_answer.split()).lower()          # For comparison
             clean_prev_feedback = ''.join(prev_feedback.split()).lower()
 
-            if clean_new_answer == clean_prev_feedback:                      # Check if the answer has stabilized
+            if clean_new_answer == clean_prev_feedback:    # Check if answer has stabilized
                 print("\nINFO: -- Response appears complete or no longer improves.\n")
                 final_answer += new_answer if new_answer else prev_feedback
                 break
 
-            final_answer += new_answer                  # Update final answer
-            prev_feedback = new_answer                  # Update previous feedback
-            new_input["inputs"] = new_feedback          # Update input with new feedback
+            final_answer += new_answer
+            prev_feedback = new_answer
+            new_input["inputs"] = new_feedback
             response_placeholder.markdown(f"<div class='system-bubble'>{final_answer}</div>", unsafe_allow_html=True)
 
-        response_placeholder.empty()
+        response_placeholder.empty()    # Clear the real-time response placeholder
         return final_answer.strip()
 
-    def trim_conversation_history(max_length=5):
-        """
-        Trim the conversation history to avoid excessive memory usage.
-        """
-        if len(st.session_state.conversation_history) > max_length:
-            st.session_state.conversation_history = st.session_state.conversation_history[-max_length:]
 
     def ask_question(self, usr_question: str, usr_level: str = "Intermediate",
                      temperature: float = 0.0, max_tokens: int = 500) -> str:
         """
         Process the user's question using retrieval-augmented generation (RAG).
         """
+        st.session_state.total_tokens = 0
+        st.session_state.tokens_count.empty()
         try:
-            # NEW: Ajouter l'historique de conversation au prompt.
             conversation_history = "\n".join(
-                [f"User: {msg['content']}" if msg["role"] == "user" else f"System: {msg['content']}"
+                [f"user: {msg['content']}" if msg["role"] == "user" else f"system: {msg['content']}"
                  for msg in st.session_state.messages]
             )
-
-            # Ajout du contexte de la conversation précédente au message actuel.
-            query_with_history = f"{conversation_history}\n{usr_question}\n"
-
+            query_with_history = f"{conversation_history}\nuser:\n{usr_question}\n_____________________________\n"
             retrieved_docs = self.helper.retrieve_documents("arxiv_papers_collection", usr_question)
             input = self.generate_augmented_response(query=query_with_history,
                                                      retrieved_docs=retrieved_docs,
@@ -162,35 +155,56 @@ class QASystem:
                                                      temperature=temperature,
                                                      max_tokens=max_tokens)
 
-            total_tokens = self.helper.count_tokens(usr_question)   # Check if the total tokens exceed the limit
-            for doc in input['documents']:
-                total_tokens += sum(self.helper.count_tokens(field) for field in
-                                    [doc['title'], doc['author'], doc['published'], doc['summary'], doc['text'], doc['pdf_link']])
-            if total_tokens > 4096:
-                return st.error("La requête dépasse la limite de 4096 tokens.")
+            # -- Tokens input count
+            st.session_state.total_tokens = self.helper.calculate_tokens(input=input)
+            with st.session_state.tokens_count:
+                st.write(f"`{st.session_state.get('total_tokens', 0)}` tokens")
 
-            print(f"Context & User question:\n--------------------------\n {input['inputs']}\n")   # Display the context, user question, and parameters
-            print(f"Parameters:\n---------------------------------------\n"
-                  f"- Temperature: {temperature}\n"
-                  f"- Max tokens per answer: {max_tokens}\n"
-                  f"- Explanation: {usr_level}\n"
-                  f"- Total tokens: {total_tokens}\n")
+            progress_value = min(st.session_state.total_tokens / 4096, 1.0)
+            st.session_state.tokens_bar.progress(progress_value)
 
-            headers = {
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json"
-            }
+            if st.session_state.total_tokens > 2000:
+                #st.info("Context will exceed the 4096 tokens limit, conversation memory trimmed.\n"
+                self.helper.trim_conversation_history()
+            else:
 
-            feedback = self.query(headers, input)
-            answer = feedback.replace(input["inputs"], "").replace("Answer:", "")
-            print(f"\nInitial answer:\n----------------------------------------------------\n{answer}")
+                print(f"Context & User question:\n--------------------------\n {input['inputs']}\n")   # Display the context, user question, and parameters
+                print(f"Parameters:\n---------------------------------------\n"
+                      f"- Temperature: {temperature}\n"
+                      f"- Max tokens per answer: {max_tokens}\n"
+                      f"- Explanation: {usr_level}\n"
+                      f"- Total tokens: {st.session_state.total_tokens}\n")
 
-            final_answer = self.extend_response(feedback, input, headers)
-            print(f"\nReturning final_answer:\n----------------------------------------------------\n{final_answer}")
+                headers = {
+                    "Authorization": f"Bearer {self.api_key}",
+                    "Content-Type": "application/json"
+                }
 
-            st.session_state.response_placeholder = None
+                feedback = self.query(headers, input)                                                       # Send the query to the model
+                answer = feedback.replace(input["inputs"], "").replace("Answer:", "")    # Extract the answer from the feedback
+                final_answer = self.extend_response(feedback, input, headers)                               # Extend the answer if needed
 
-            return final_answer if final_answer else "No valid answer found"
+                print(f"\nInitial answer:\n----------------------------------------------------\n{answer}")
+                print(f"\nReturning final_answer:\n----------------------------------------------------\n{final_answer}")
+
+                st.session_state.response_placeholder = None
+
+                # -- Tokens output count
+                st.session_state.tokens_count.empty()
+
+                st.session_state.total_tokens += self.helper.count_tokens(final_answer)
+                with st.session_state.tokens_count:
+                    st.write(f"`{st.session_state.get('total_tokens', 0)}` tokens")
+
+                progress_value = min(st.session_state.total_tokens / 4096, 1.0)
+                st.session_state.tokens_bar.progress(progress_value)
+
+                if st.session_state.total_tokens > 2000:                                                 # Check if the response exceeds the token limit
+                    #st.info("Request exceeds the 4096 tokens limit, conversation memory was trimmed.\n"
+                    #        "Note: you can also save or download a discussion before exceeding the context window size limit. (see tokens numbers above)")
+                    self.helper.trim_conversation_history()
+
+                return final_answer if final_answer else "No valid answer found"
 
         except Exception as e:
             st.error(f"Erreur système : {str(e)}")
