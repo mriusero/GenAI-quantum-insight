@@ -103,25 +103,29 @@ The project follows a modular structure, with the following directories and file
 │       │   ├── research_assistant
 │       │   │   ├── __init__.py
 │       │   │   ├── checkpoints
-│       │   │   │   ├── processed_pdfs.pkl
-│       │   │   │   └── vector_store
-│       │   │   │       ├── 973d1715-ae69-4cee-878c-dcb8a8f27efa
-│       │   │   │       │   ├── data_level0.bin
-│       │   │   │       │   ├── header.bin
-│       │   │   │       │   ├── index_metadata.pickle
-│       │   │   │       │   ├── length.bin
-│       │   │   │       │   └── link_lists.bin
-│       │   │   │       └── chroma.sqlite3
-│       │   │   ├── document_processing.py
+│       │   │   │   └── processed_pdfs.pkl
 │       │   │   ├── processing
-│       │   │   ├── qa_system.py
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── preprocessing.py
+│       │   │   │   ├── preprocessor.py
+│       │   │   │   └── store_manager.py
+│       │   │   ├── qa_system
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── conversation_saving.py
+│       │   │   │   ├── conversation_ui.py
+│       │   │   │   ├── qa_helper.py
+│       │   │   │   └── qa_system.py
 │       │   │   ├── skeleton.py
 │       │   │   └── utilities
+│       │   │       ├── __init__.py
+│       │   │       └── helper.py
 │       │   └── visualization
 │       │       ├── __init__.py
 │       │       └── visualize.py
 │       ├── layout
 │       │   ├── __init__.py
+│       │   ├── images
+│       │   │   └── llama-icon.png
 │       │   ├── layout0.py
 │       │   ├── layout1.py
 │       │   ├── layout2.py
@@ -134,7 +138,7 @@ The project follows a modular structure, with the following directories and file
 └── tests
     └── test.py
 
-16 directories, 42 files
+16 directories, 46 files
 ```
 ## License
 This project is licensed under the terms of the [MIT License](LICENSE).
