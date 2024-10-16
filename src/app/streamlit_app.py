@@ -63,7 +63,7 @@ def main_layout():
             st.sidebar.markdown(
                 f'<p style="color:silver; font-size:16px;">'
                 f'<img src="{logo_url}" width="30" style="vertical-align:middle; margin-right:12px;"/>'
-                f'API key found successfully !</p>',
+                f'API Connected!</p>',
                 unsafe_allow_html=True
             )
         else:

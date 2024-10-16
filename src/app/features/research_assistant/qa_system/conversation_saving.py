@@ -7,7 +7,7 @@ SAVE_DIR = "database/.conversations/"
 def display_conversations():
 
     conv_files = [f for f in os.listdir(SAVE_DIR) if f.endswith('.json')]
-    selected_conv = st.selectbox("Choose a conversation", conv_files)
+    selected_conv = st.selectbox("Currently display_", conv_files)
 
     if selected_conv:
         conv_path = os.path.join(SAVE_DIR, selected_conv)
