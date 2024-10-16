@@ -1,4 +1,3 @@
-import base64
 import streamlit as st
 
 def page_2(debug, agent, qa_system):
