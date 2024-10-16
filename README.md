@@ -27,7 +27,7 @@ Welcome to **Quantum Insights**, a research assistant designed to **simplify acc
 
 ## Why Use This Project?
 
-Whether you’re a **scientist**, **industry professional**, or **beginner**, this project empowers you to dive deep into the latest breakthroughs in quantum research. You’ll be able to search, summarize, and explore complex topics without the typical technical barriers. The integration of modern NLP and machine learning technologies ensures an efficient and user-friendly experience.
+Whether you’re a **scientist**, **industry professional**, or **beginner**, this project empowers you to dive deep into the latest breakthroughs in quantum research. You’ll be able to search, summarize, and explore complex topics without the typical technical barriers. The integration of modern NLP ensure an efficient and user-friendly experience.
 
 Get started today and bridge the gap between research and innovation! 🌐
 
