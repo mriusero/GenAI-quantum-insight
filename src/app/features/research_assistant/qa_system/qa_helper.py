@@ -1,7 +1,8 @@
-import streamlit as st
 import chromadb
+import streamlit as st
 from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer
+
 
 class QA_helper:
     def __init__(self, embedding_model, debug=False, vector_store_file="VECTOR_STORE_FILE"):
@@ -30,7 +31,6 @@ Instructions:
            - Emphasize important terms using **bold** or *italic* text.
            - Separate different topics into paragraphs or distinct sections.
            - Pay attention to formatting markdown correctly with specials characters for a correct display.
-           - Optionally, use scientific emojis sparingly to add clarity or emphasis (e.g., 🧪, 🔬, or 💡).
 
         3. **Simplify complex ideas**:
            - Divide complex concepts into smaller, understandable parts.
@@ -46,15 +46,16 @@ Instructions:
 
         6. **User-centered response**:
            - Keep the user’s perspective in mind. Provide explanations that are clear, informative, and moderately detailed.
+           - Don't imagine a user question, always answer the latest query.
            - In case of ambiguity, ask for clarification or provide multiple interpretations.
-
+           
     Now, """
 
     LEVEL_ADAPTATION = {
-            "Beginner": "provide a straightforward and easy-to-understand explanation for the following query, avoiding technical terms or complex concepts:\n",
-            "Intermediate": "provide a clear and moderately detailed explanation for the following query, including some technical terms but keeping the explanation accessible to someone with a basic understanding of the topic:\n",
-            "Advanced": "provide a comprehensive and detailed answer for the following query, incorporating technical terms and concepts, and offering a deeper exploration of the topic, suitable for someone with substantial knowledge in the area:\n",
-            "Expert": "provide a highly technical, in-depth, and nuanced answer for the following query, using advanced terminology and concepts, aimed at someone with expert-level understanding of the subject matter:\n"
+            "Beginner": "provide an easy-to-understand explanation for the following query, avoiding technical terms or complex concepts:\n",
+            "Intermediate": "provide a clear and moderately detailed explanation for the following query, including some technical terms but keeping the explanation accessible:\n",
+            "Advanced": "provide a comprehensive and detailed answer for the following query, incorporating technical terms and concepts, and offering a deeper exploration of the topic:\n",
+            "Expert": "provide a highly technical, in-depth, and nuanced answer for the following query, using advanced terminology and concepts:\n"
     }
 
     def retrieve_documents(self, collection_name: str, query: str, top_k: int = 5):

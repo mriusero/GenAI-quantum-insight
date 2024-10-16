@@ -1,9 +1,10 @@
-import streamlit as st
-from typing import List, Dict, Any
-from datetime import datetime
 import json
 import os
-import gc
+from datetime import datetime
+from typing import Any
+
+import streamlit as st
+
 
 def initialize_session_state():
     """Iniyialize the session variables if they are not already defined."""
@@ -149,32 +150,3 @@ def user_interface(qasystem: Any) -> None:
 
     st.write("___")
     save_conversation()
-
-    st.write("## Prompt examples_")
-    text = """
-#### 1. **Summarization**
-**Task:** Summarize the key insights on a specific topic.
-> "Which are the latest advancements in *quantum error correction*? Can you provide a detailed explanation that highlights the most significant discoveries, focusing on their technical implications?"
----
-#### 2. **Multi-Level Summarization**
-**Task:** Generate summaries for different expertise levels.
-> "Can you create three different summaries on *quantum algorithms*? First, a technical breakdown for quantum computing experts. Second, a summary that highlights industrial applications for professionals. Finally, an easy-to-understand summary suitable for beginners."
----
-#### 3. **Concept Explanation**  
-**Task:** Explain complex concepts in a simple way.  
-> "Can you explain the concept of *quantum superposition* in simple terms? Additionally, can you provide a practical example to show how this concept could be applied in real-world technology?"
----
-#### 4. **Code Extraction**
-**Task:** Extract and explain code related to a specific topic.
-> "Identify and explain the most common algorithms used in *quantum machine learning*. Provide code examples where relevant and explain their function in a clear and concise way."
----
-#### 5. **Industrial Application Example**
-**Task:** Connect a topic to industrial applications.
-> "Based on the advancements in *quantum physics*, can you suggest potential industrial applications? 
----
-#### 6. **Vulgarization Prompt**
-**Task:** Simplify technical information for the general public.
-> "Can you simplify the concept of *quantum entanglement* for a general audience?"
-
-    """
-    st.write(text)

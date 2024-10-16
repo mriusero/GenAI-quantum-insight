@@ -1,11 +1,11 @@
+from typing import Dict, List, Any
+
 import requests
 import streamlit as st
-import json
 from langchain_huggingface import HuggingFaceEndpoint
-from typing import Dict, List, Any, Union
-import time
 
 from .qa_helper import QA_helper
+
 
 class QASystem:
     def __init__(self,
@@ -163,9 +163,8 @@ class QASystem:
             progress_value = min(st.session_state.total_tokens / 4096, 1.0)
             st.session_state.tokens_bar.progress(progress_value)
 
-            if st.session_state.total_tokens > 3900:
-                st.info("Context will exceed the 4096 tokens limit, conversation memory trimmed.\n"
-                         "Note: you can also save or download a discussion before exceeding the context window size limit. (see tokens numbers above)")
+            if st.session_state.total_tokens > 2000:
+                #st.info("Context will exceed the 4096 tokens limit, conversation memory trimmed.\n"
                 self.helper.trim_conversation_history()
             else:
 
@@ -200,9 +199,9 @@ class QASystem:
                 progress_value = min(st.session_state.total_tokens / 4096, 1.0)
                 st.session_state.tokens_bar.progress(progress_value)
 
-                if st.session_state.total_tokens > 4096:                                                 # Check if the response exceeds the token limit
-                    st.info("Request exceeds the 4096 tokens limit, conversation memory was trimmed.\n"
-                            "Note: you can also save or download a discussion before exceeding the context window size limit. (see tokens numbers above)")
+                if st.session_state.total_tokens > 2000:                                                 # Check if the response exceeds the token limit
+                    #st.info("Request exceeds the 4096 tokens limit, conversation memory was trimmed.\n"
+                    #        "Note: you can also save or download a discussion before exceeding the context window size limit. (see tokens numbers above)")
                     self.helper.trim_conversation_history()
 
                 return final_answer if final_answer else "No valid answer found"
