@@ -2,7 +2,7 @@ import json
 import os
 import sqlite3
 
-import boto3
+#import boto3
 import pandas as pd
 import streamlit as st
 from botocore.exceptions import ClientError
@@ -42,11 +42,11 @@ def initialize_hg_api_key():
     env.read_env('src/.env')
     hg_api_key = os.getenv("HG_API_KEY")  # Dev mode
 
-    if hg_api_key is None:
-        hg_api_key = get_secret()   # Prod mode AWS
+    #if hg_api_key is None:
+    #    hg_api_key = get_secret()   # Prod mode AWS
 
     if hg_api_key is None:
-        hg_api_key = st.secrets["HG_API_KEY"]  # Streamlit sharing
+        hg_api_key = st.secrets["HG_API_KEY"]  # Streamlit mode
 
     if hg_api_key is None:
         st.error("Hugging Face API key not found")
