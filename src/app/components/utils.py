@@ -5,7 +5,7 @@ import sqlite3
 #import boto3
 import pandas as pd
 import streamlit as st
-from botocore.exceptions import ClientError
+#from botocore.exceptions import ClientError
 from environs import Env, ErrorMapping
 
 
