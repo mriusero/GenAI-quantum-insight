@@ -10,10 +10,11 @@ secondaryBackgroundColor = "#202937"
 #font = "sans serif"
 #default_background = "#0E1117"
 
-[browser]
-serverAddress = "localhost"
 
 [server]
-headless = false
-runOnSave = true
+headless = true
+
+[browser]
+gatherUsageStats = false
+
 port = 8501
