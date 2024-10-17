@@ -34,7 +34,7 @@ def get_secret():
     except ClientError as e: # For a list of exceptions thrown, see https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
         raise e
     secret_dict = json.loads(get_secret_value_response['SecretString'])
-    return secret_dict['HG_API_KEY_PRO']
+    return secret_dict['HG_API_KEY_PRO_2']
 
 def initialize_hg_api_key():
     """Initialize and return the Hugging Face API key."""
