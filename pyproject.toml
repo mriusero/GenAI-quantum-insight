@@ -6,7 +6,7 @@ authors = ["mriusero"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.10.11"
+python = "^3.10.11"
 streamlit = "^1.39.0"
 watchdog = "^5.0.3"
 pandas = "^2.2.3"
