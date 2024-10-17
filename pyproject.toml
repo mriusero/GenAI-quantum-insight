@@ -35,3 +35,6 @@ faiss-cpu = "^1.9.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+poetry env use 3.10.11
