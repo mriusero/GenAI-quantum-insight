@@ -49,4 +49,7 @@ def initialize_hg_api_key():
         st.error("Hugging Face API key not found")
         raise ErrorMapping("Hugging Face API key not found.")
 
+    if hg_api_key is None:
+        hg_api_key = st.secrets["HG_API_KEY"]
+
     return hg_api_key
