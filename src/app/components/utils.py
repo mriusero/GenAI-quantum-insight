@@ -20,7 +20,7 @@ def load_data(db_path="./database/arxiv_data.db"):
 
 def get_secret():
     """Retrieve the secret API key from AWS Secrets Manager."""
-    secret_name = "HG_API_KEY_PRO"
+    secret_name = "HG_API_KEY_PRO_2"
     region_name = "eu-west-3"
     session = boto3.session.Session() # Create a Secrets Manager client
     client = session.client(
@@ -43,13 +43,13 @@ def initialize_hg_api_key():
     hg_api_key = os.getenv("HG_API_KEY")  # Dev mode
 
     if hg_api_key is None:
-        hg_api_key = get_secret()   # Prod mode
+        hg_api_key = get_secret()   # Prod mode AWS
+
+    if hg_api_key is None:
+        hg_api_key = st.secrets["HG_API_KEY"]  # Streamlit sharing
 
     if hg_api_key is None:
         st.error("Hugging Face API key not found")
         raise ErrorMapping("Hugging Face API key not found.")
-
-    if hg_api_key is None:
-        hg_api_key = st.secrets["HG_API_KEY"]
 
     return hg_api_key
