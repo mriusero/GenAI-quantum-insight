@@ -459,7 +459,6 @@ files = [
 
 [package.dependencies]
 colorama = {version = "*", markers = "os_name == \"nt\""}
-importlib-metadata = {version = ">=4.6", markers = "python_full_version < \"3.10.2\""}
 packaging = ">=19.1"
 pyproject_hooks = "*"
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
@@ -1909,10 +1908,7 @@ async-timeout = {version = ">=4.0.0,<5.0.0", markers = "python_version < \"3.11\
 langchain-core = ">=0.3.10,<0.4.0"
 langchain-text-splitters = ">=0.3.0,<0.4.0"
 langsmith = ">=0.1.17,<0.2.0"
-numpy = [
-    {version = ">=1,<2", markers = "python_version < \"3.12\""},
-    {version = ">=1.26.0,<2.0.0", markers = "python_version >= \"3.12\""},
-]
+numpy = {version = ">=1,<2", markers = "python_version < \"3.12\""}
 pydantic = ">=2.7.4,<3.0.0"
 PyYAML = ">=5.3"
 requests = ">=2,<3"
@@ -1936,10 +1932,7 @@ dataclasses-json = ">=0.5.7,<0.7"
 langchain = ">=0.3.3,<0.4.0"
 langchain-core = ">=0.3.10,<0.4.0"
 langsmith = ">=0.1.125,<0.2.0"
-numpy = [
-    {version = ">=1,<2", markers = "python_version < \"3.12\""},
-    {version = ">=1.26.0,<2.0.0", markers = "python_version >= \"3.12\""},
-]
+numpy = {version = ">=1,<2", markers = "python_version < \"3.12\""}
 pydantic-settings = ">=2.4.0,<3.0.0"
 PyYAML = ">=5.3"
 requests = ">=2,<3"
@@ -1961,10 +1954,7 @@ files = [
 jsonpatch = ">=1.33,<2.0"
 langsmith = ">=0.1.125,<0.2.0"
 packaging = ">=23.2,<25"
-pydantic = [
-    {version = ">=2.5.2,<3.0.0", markers = "python_full_version < \"3.12.4\""},
-    {version = ">=2.7.4,<3.0.0", markers = "python_full_version >= \"3.12.4\""},
-]
+pydantic = {version = ">=2.5.2,<3.0.0", markers = "python_full_version < \"3.12.4\""}
 PyYAML = ">=5.3"
 tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<10.0.0"
 typing-extensions = ">=4.7"
@@ -2033,10 +2023,7 @@ files = [
 [package.dependencies]
 httpx = ">=0.23.0,<1"
 orjson = ">=3.9.14,<4.0.0"
-pydantic = [
-    {version = ">=1,<3", markers = "python_full_version < \"3.12.4\""},
-    {version = ">=2.7.4,<3.0.0", markers = "python_full_version >= \"3.12.4\""},
-]
+pydantic = {version = ">=1,<3", markers = "python_full_version < \"3.12.4\""}
 requests = ">=2,<3"
 requests-toolbelt = ">=1.0.0,<2.0.0"
 
@@ -3475,11 +3462,7 @@ files = [
 ]
 
 [package.dependencies]
-numpy = [
-    {version = ">=1.22.4", markers = "python_version < \"3.11\""},
-    {version = ">=1.23.2", markers = "python_version == \"3.11\""},
-    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
-]
+numpy = {version = ">=1.22.4", markers = "python_version < \"3.11\""}
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
 tzdata = ">=2022.7"
@@ -3961,10 +3944,7 @@ files = [
 [package.dependencies]
 annotated-types = ">=0.6.0"
 pydantic-core = "2.23.4"
-typing-extensions = [
-    {version = ">=4.6.1", markers = "python_version < \"3.13\""},
-    {version = ">=4.12.2", markers = "python_version >= \"3.13\""},
-]
+typing-extensions = {version = ">=4.6.1", markers = "python_version < \"3.13\""}
 
 [package.extras]
 email = ["email-validator (>=2.0.0)"]
@@ -4157,11 +4137,7 @@ files = [
 [package.dependencies]
 astroid = ">=3.3.4,<=3.4.0-dev0"
 colorama = {version = ">=0.4.5", markers = "sys_platform == \"win32\""}
-dill = [
-    {version = ">=0.2", markers = "python_version < \"3.11\""},
-    {version = ">=0.3.6", markers = "python_version >= \"3.11\" and python_version < \"3.12\""},
-    {version = ">=0.3.7", markers = "python_version >= \"3.12\""},
-]
+dill = {version = ">=0.2", markers = "python_version < \"3.11\""}
 isort = ">=4.2.5,<5.13.0 || >5.13.0,<6"
 mccabe = ">=0.6,<0.8"
 platformdirs = ">=2.2.0"
@@ -6875,5 +6851,5 @@ type = ["pytest-mypy"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.10"
-content-hash = "d6afb07bdda37098855c42987e3c6dbf443c23d233fb825f80a02615e38ba6b7"
+python-versions = "3.10.11"
+content-hash = "3d32722cd5758cd9d76e57094dbfb8e0ce7918deacef723bb68c9bf579f2f814"

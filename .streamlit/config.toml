@@ -13,8 +13,6 @@ secondaryBackgroundColor = "#202937"
 
 [server]
 headless = true
-
-[browser]
 gatherUsageStats = false
 
 port = 8501
