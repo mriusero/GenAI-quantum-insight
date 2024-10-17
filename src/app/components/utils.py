@@ -46,9 +46,6 @@ def initialize_hg_api_key():
         hg_api_key = get_secret()   # Prod mode AWS
 
     if hg_api_key is None:
-        hg_api_key = st.secrets["HG_API_KEY"]  # Streamlit sharing
-
-    if hg_api_key is None:
         st.error("Hugging Face API key not found")
         raise ErrorMapping("Hugging Face API key not found.")
 
