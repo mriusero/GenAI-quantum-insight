@@ -2,6 +2,12 @@
 
 Welcome to **Quantum Insights**, a research assistant designed to **simplify access to cutting-edge research** in quantum physics. This project leverages **LLMs (Large Language Models)** to synthesize, summarize and explain complex scientific papers, making them accessible to everyone—whether you're a seasoned scientist or just starting out.
 
+![Quantum Insights](src/app/layout/images/chat.png)
+
+> For the moment, you have to use your proper 'Pro Hugging Face API Key' to run the application. 
+> You can get one by signing up on the Hugging Face website, the key should be placed in the `src/app/.env` file.
+
+> Project is still in development, stay tuned for the next updates ! 😉
 ---
 ## Key Features
 
@@ -9,6 +15,10 @@ Welcome to **Quantum Insights**, a research assistant designed to **simplify acc
 - **Concept Explanation**: Break down complex scientific topics into simple, digestible concepts.
 - **Code Extraction**: Identify and explain code snippets from research papers.
 - **Multilevel Support**: Adjust research papers explanation level to reach a global audience.
+
+### Example Usage
+
+![Quantum Insights](src/app/layout/images/example.png)
 
 ---
 

@@ -12,7 +12,7 @@ secondaryBackgroundColor = "#202937"
 
 
 [server]
-headless = true
+headless = false
 gatherUsageStats = false
 
 port = 8501
