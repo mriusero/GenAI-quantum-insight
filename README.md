@@ -5,7 +5,7 @@ Welcome to **Quantum Insights**, a research assistant designed to **simplify acc
 ![Quantum Insights](src/app/layout/images/chat.png)
 
 > For the moment, you have to use your proper 'Pro Hugging Face API Key' to run the application. 
-> You can get one by signing up on the Hugging Face website, the key should be placed in the `src/app/.env` file.
+> You can get one by signing up on the Hugging Face website, the key should be placed in a `src/app/.env` file.
 
 > Project is still in development, stay tuned for the next updates ! 😉
 ---
